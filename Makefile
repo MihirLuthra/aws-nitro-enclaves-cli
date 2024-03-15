@@ -95,7 +95,10 @@ all: build-setup init nitro-cli vsock-proxy
 
 .PHONY: driver-deps
 driver-deps:
-	((cat /etc/os-release | grep -qni  "Ubuntu"  \
+	((uname -r | grep -qni  "amzn" \
+		&& sudo yum install -y kernel-headers-$$(uname -r) \
+		&& sudo yum install -y kernel-devel-$$(uname -r)) || \
+	(cat /etc/os-release | grep -qni  "Ubuntu"  \
 		&& sudo apt-get install -y linux-headers-$$(uname -r)) || \
 	(cat /etc/os-release | grep -qni  "Amazon Linux\|CentOS\|RedHat" \
 		&& sudo yum install -y kernel-headers-$$(uname -r) \
